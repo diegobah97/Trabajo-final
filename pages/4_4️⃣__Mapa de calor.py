@@ -27,7 +27,7 @@ data_puntos = data[ ["Este","Norte", "NOMBRE EM", "COMUNA F", "TIPO INST", "RECU
 })
 
 
-# Generar listado de horarios ordenados
+# Generar listado ordenados
 recu_puntos = data_puntos["RECURSO"].sort_values().unique()
 
 # Generar listado de comunas ordenadas
@@ -47,22 +47,22 @@ with st.sidebar:
   if not comuna_sel:
     comuna_sel = comunas_puntos.tolist()
 
- # Multiselector de horarios
-  hora_sel = st.multiselect(
+ # Multiselector de recurso
+  rec_sel = st.multiselect(
     label="Tipo de recurso",
     options=recu_puntos,
     default=[]
   )
   # Se establece la lista completa en caso de no seleccionar ninguna
-  if not hora_sel:
-    hora_sel = recu_puntos.tolist()
+  if not rec_sel:
+    rec_sel = recu_puntos.tolist()
 
   # Se establece la lista completa en caso de no seleccionar ninguna
-  if not hora_sel:
-    hora_sel = recu_puntos.tolist()
+  if not rec_sel:
+    rec_sel = recu_puntos.tolist()
 
 
-geo_data = data_puntos.query(" RECURSO==@hora_sel and Comuna==@comuna_sel ")
+geo_data = data_puntos.query(" RECURSO==@rec_sel and Comuna==@comuna_sel ")
 
 if geo_data.empty:
   # Advertir al usuario que no hay datos para los filtros
@@ -78,8 +78,8 @@ else:
       initial_view_state=pdk.ViewState(
           latitude=avg_lat,
           longitude=avg_lng,
-          zoom=10,
-          min_zoom=10,
+          zoom=5,
+          min_zoom=5,
           max_zoom=15,
           pitch=20,
       ),
@@ -91,24 +91,13 @@ else:
           auto_highlight=True,
           get_position='[Este, Norte]',
           opacity=0.6,
-          get_weight="Horario == '10:00 - 14:00' ? 255 : 10"
+        
         )      
       ],
-      tooltip={
-        "html": "<b>Negocio: </b> {Negocio} <br /> "
-                "<b>Dirección: </b> {Dirección} <br /> "
-                "<b>Comuna: </b> {Comuna} <br /> "
-                "<b>Horario: </b> {Horario} <br /> "
-                "<b>Código: </b> {CODIGO} <br /> "
-                "<b>Georeferencia (Lat, Lng): </b>[{Norte}, {Este}] <br /> ",
-        "style": {
-          "backgroundColor": "steelblue",
-          "color": "white"
-        }
-      }
+
   )
 
   st.write(puntos_mapa)
 
-
-AgGrid(data_puntos)
+st.write("#### Tabla de información")
+AgGrid(geo_data)

@@ -4,9 +4,7 @@ import streamlit.components.v1 as components
 # Se configura la página
 st.set_page_config(
   page_icon=":thumbs_up:",
-  layout="wide",
-  
-)
+  layout="wide",)
 
 
 st.sidebar.write("## Curso visualización de datos en internet")
