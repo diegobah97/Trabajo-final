@@ -4,3 +4,4 @@ pydeck
 numpy
 matplotlib
 openpyxl
+st_aggrid
