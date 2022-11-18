@@ -100,4 +100,4 @@ else:
   st.write(puntos_mapa)
 
 st.write("#### Tabla de información")
-AgGrid(geo_data)
+st.write(geo_data)
